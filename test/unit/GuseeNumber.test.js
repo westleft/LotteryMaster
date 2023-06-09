@@ -5,14 +5,16 @@ const { assert, expect } = require("chai");
 !developmentChain.includes(network.name)
   ? describe.skip
   : describe("Guess number unit test", () => {
-    let guessNumberContract, deployer;
+    let guessNumberContract
+    let deployer;
+    let vrfCoordinatorV2Mock;
     const chainId = network.config.chainId;
 
     beforeEach(async () => {
       deployer = (await getNamedAccounts()).deployer;
       await deployments.fixture(["all"]);
 
-      guessNumberContract = await ethers.getContract("GuessNumber", deployer);
+      guessNumberContract = await ethers.getContract("GuessNumber", deployer);      
     })
 
     describe("constructor", () => {
@@ -51,5 +53,24 @@ const { assert, expect } = require("chai");
         const playerBalance = await guessNumberContract.getAmountByAddress(deployer)
         assert.equal(ethers.utils.formatEther(playerBalance), "0.3");
       })
+    })
+
+    describe("random number", () => {
+
+
+      it("產生隨機數字", async () => {
+        const tx = await guessNumberContract.requestRandomWords();
+            // 等待足够的区块确认
+        const requestConfirmationBlocks = 3;
+        const blockTime = 15; // 假设区块时间为15秒
+        const waitTime = requestConfirmationBlocks * blockTime;
+        await network.provider.send("evm_increaseTime", [waitTime]);
+        await network.provider.send("evm_mine");
+
+        const randomNumber = await guessNumberContract.getRandomWord();
+        console.log(randomNumber.toNumber())
+        console.log(guessNumberContract.address)
+      })
+
     })
   })
