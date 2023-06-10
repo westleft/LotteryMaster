@@ -56,21 +56,14 @@ const { assert, expect } = require("chai");
     })
 
     describe("random number", () => {
-
-
       it("產生隨機數字", async () => {
         const tx = await guessNumberContract.requestRandomWords();
-            // 等待足够的区块确认
-        const requestConfirmationBlocks = 3;
-        const blockTime = 15; // 假设区块时间为15秒
-        const waitTime = requestConfirmationBlocks * blockTime;
-        await network.provider.send("evm_increaseTime", [waitTime]);
-        await network.provider.send("evm_mine");
-
-        const randomNumber = await guessNumberContract.getRandomWord();
-        console.log(randomNumber.toNumber())
-        console.log(guessNumberContract.address)
       })
+    })
 
+    describe("guess number", () => {
+      it("產生隨機數字", async () => {
+        const tx = await guessNumberContract.requestRandomWords();
+      })
     })
   })

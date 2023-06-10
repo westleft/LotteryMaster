@@ -52,6 +52,8 @@ contract GuessNumber is VRFConsumerBaseV2 {
         i_gasLane = gasLane;
         i_subId = subId;
         i_callbackGasLimit = callbackGasLimit;
+
+        requestRandomWords();
     }
 
     // 付款到 totalPayments
@@ -64,6 +66,7 @@ contract GuessNumber is VRFConsumerBaseV2 {
 
     // 產生隨機數字
     function requestRandomWords() external {
+        creatingRandomNumber = true;
         requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subId,
@@ -72,8 +75,18 @@ contract GuessNumber is VRFConsumerBaseV2 {
             numWords
         );
     }
+
     function fulfillRandomWords(uint256 /* requestId*/, uint256[] memory s_randomWords) internal override {
-        randomWords = s_randomWords[0];
+        randomWords = limitToRange(s_randomWords[0]);
+        creatingRandomNumber = false;
+    }
+
+    // 產生 1~10 的數字
+    function limitToRange(uint256 randomNumber) private pure returns (uint8) {
+        uint8 minValue = 1;
+        uint8 maxValue = 10;
+        uint8 range = maxValue - minValue + 1;
+        return uint8(randomNumber % range) + minValue;
     }
 
 
@@ -104,7 +117,7 @@ contract GuessNumber is VRFConsumerBaseV2 {
         return paymentAddress[_address];
     }
 
-    function getRandomWord() external view returns(uint256) {
+    function getRandomWord() external view returns(uint256) onlyOwner() {
         return randomWords;
     }
 }
