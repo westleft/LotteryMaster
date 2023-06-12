@@ -10,7 +10,7 @@ error GuessNumber__RandomNumberCreating();
 error GuessNumber__OutOfRange();
 error GuessNumber__TransferFailed();
 
-contract GuessNumber is VRFConsumerBaseV2 { 
+contract GuessNumber is VRFConsumerBaseV2 {
     event NotWinner(address indexed player, uint256 playerNumber);
     event Winner(address indexed player, uint256 playerNumber);
 
@@ -18,7 +18,7 @@ contract GuessNumber is VRFConsumerBaseV2 {
     /**
      付款相關變數
     */
-    mapping (address => uint) paymentAddress;
+    mapping(address => uint) paymentAddress;
     uint256 private minPayment = 0.01 ether;
 
     /**
@@ -46,11 +46,11 @@ contract GuessNumber is VRFConsumerBaseV2 {
     receive() external payable {}
 
     constructor(
-        address vefCoordinatorV2, 
+        address vefCoordinatorV2,
         bytes32 gasLane,
         uint64 subId,
-        uint32 callbackGasLimit 
-    ) VRFConsumerBaseV2(vefCoordinatorV2) payable {
+        uint32 callbackGasLimit
+    ) payable VRFConsumerBaseV2(vefCoordinatorV2) {
         i_owner = msg.sender;
         i_vrfCoordinator = VRFCoordinatorV2Interface(vefCoordinatorV2);
         i_gasLane = gasLane;
@@ -70,7 +70,10 @@ contract GuessNumber is VRFConsumerBaseV2 {
         );
     }
 
-    function fulfillRandomWords(uint256 /* requestId*/, uint256[] memory s_randomWords) internal override {
+    function fulfillRandomWords(
+        uint256 /* requestId*/,
+        uint256[] memory s_randomWords
+    ) internal override {
         randomWord = limitToRange(s_randomWords[0]);
         creatingRandomNumber = false;
     }
@@ -87,16 +90,17 @@ contract GuessNumber is VRFConsumerBaseV2 {
     function drawLottery(uint256 _playerNumber) public payable {
         if (msg.value < minPayment) revert GuessNumber__PaymentNotEnough();
         if (creatingRandomNumber) revert GuessNumber__RandomNumberCreating();
-        if (_playerNumber > 10 || _playerNumber < 1) revert GuessNumber__OutOfRange();
+        if (_playerNumber > 10 || _playerNumber < 1)
+            revert GuessNumber__OutOfRange();
 
         paymentAddress[msg.sender] += msg.value;
 
         if (randomWord != _playerNumber) {
             emit NotWinner(msg.sender, _playerNumber);
             return;
-        } 
+        }
 
-        uint256 prizeAmount = address(this).balance * 80 / 100; // 80% 的錢錢
+        uint256 prizeAmount = (address(this).balance * 80) / 100; // 80% 的錢錢
         (bool success, ) = (msg.sender).call{value: prizeAmount}("");
         if (!success) {
             revert GuessNumber__TransferFailed();
@@ -118,7 +122,9 @@ contract GuessNumber is VRFConsumerBaseV2 {
         return minPayment;
     }
 
-    function getAmountByAddress(address _address) external view returns(uint256) {
+    function getAmountByAddress(
+        address _address
+    ) external view returns (uint256) {
         return paymentAddress[_address];
     }
 }

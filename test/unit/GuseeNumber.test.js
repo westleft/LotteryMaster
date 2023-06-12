@@ -1,11 +1,11 @@
-const { network, getNamedAccounts, deployments, ethers } = require("hardhat")
+const { network, getNamedAccounts, deployments, ethers } = require("hardhat");
 const { developmentChain, networkConfig } = require("../../helper-hardhat-config");
 const { assert, expect } = require("chai");
 
 !developmentChain.includes(network.name)
   ? describe.skip
   : describe("Guess number unit test", () => {
-    let guessNumberContract
+    let guessNumberContract;
     let deployer;
     let vrfCoordinatorV2Mock;
     const chainId = network.config.chainId;
@@ -14,8 +14,8 @@ const { assert, expect } = require("chai");
       deployer = (await getNamedAccounts()).deployer;
       await deployments.fixture(["all"]);
 
-      guessNumberContract = await ethers.getContract("GuessNumber", deployer);    
-      vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer);    
+      guessNumberContract = await ethers.getContract("GuessNumber", deployer);
+      vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer);
     })
 
     describe("constructor", () => {
@@ -58,7 +58,7 @@ const { assert, expect } = require("chai");
         const afterBalance = await ethers.provider.getBalance(deployer);
         assert(afterBalance > beforeBalance, true);
       })
-      
+
       it("隨機數字還沒產生", async () => {
         const transaction = await guessNumberContract.drawLottery(7, { value: ethers.utils.parseEther("0.01") });
         await expect(guessNumberContract.drawLottery(5, { value: ethers.utils.parseEther("0.01") }))
@@ -70,7 +70,7 @@ const { assert, expect } = require("chai");
         const requestId = await guessNumberContract.requestId();
         await vrfCoordinatorV2Mock.fulfillRandomWords(requestId.toString(), guessNumberContract.address);
         await guessNumberContract.drawLottery(5, { value: ethers.utils.parseEther("0.01") });
-      })      
+      })
     })
 
     describe("檢查紀錄", () => {
