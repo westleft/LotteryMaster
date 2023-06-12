@@ -19,7 +19,7 @@ contract GuessNumber is VRFConsumerBaseV2 {
      付款相關變數
     */
     mapping (address => uint) paymentAddress;
-    uint256 private minPayment = 0.1 ether;
+    uint256 private minPayment = 0.01 ether;
 
     /**
      vrf 相關變數
@@ -35,9 +35,8 @@ contract GuessNumber is VRFConsumerBaseV2 {
     /**
      隨機數字 相關變數
     */
-
-    uint256 private randomWord; // 隨機數字
-    bool private creatingRandomNumber = true;
+    uint256 private randomWord = 7; // 隨機數字
+    bool private creatingRandomNumber = false;
 
     modifier onlyOwner() {
         if (msg.sender != i_owner) revert GuessNumber__NotOwner();
@@ -57,8 +56,6 @@ contract GuessNumber is VRFConsumerBaseV2 {
         i_gasLane = gasLane;
         i_subId = subId;
         i_callbackGasLimit = callbackGasLimit;
-
-        requestRandomWords();
     }
 
     // 產生隨機數字
@@ -87,7 +84,7 @@ contract GuessNumber is VRFConsumerBaseV2 {
     }
 
     // 抽獎
-    function drawLottery(uint256 _playerNumber) public payable returns(bool) {
+    function drawLottery(uint256 _playerNumber) public payable {
         if (msg.value < minPayment) revert GuessNumber__PaymentNotEnough();
         if (creatingRandomNumber) revert GuessNumber__RandomNumberCreating();
         if (_playerNumber > 10 || _playerNumber < 1) revert GuessNumber__OutOfRange();
@@ -96,7 +93,7 @@ contract GuessNumber is VRFConsumerBaseV2 {
 
         if (randomWord != _playerNumber) {
             emit NotWinner(msg.sender, _playerNumber);
-            return false;
+            return;
         } 
 
         uint256 prizeAmount = address(this).balance * 80 / 100; // 80% 的錢錢
@@ -106,7 +103,6 @@ contract GuessNumber is VRFConsumerBaseV2 {
         }
         requestRandomWords();
         emit Winner(msg.sender, _playerNumber);
-        return true;
     }
 
     // 取得合約佈署者
@@ -124,9 +120,5 @@ contract GuessNumber is VRFConsumerBaseV2 {
 
     function getAmountByAddress(address _address) external view returns(uint256) {
         return paymentAddress[_address];
-    }
-
-    function getRandomWord() external view onlyOwner() returns(uint256) {
-        return randomWord;
     }
 }

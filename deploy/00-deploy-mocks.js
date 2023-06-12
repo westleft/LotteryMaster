@@ -13,7 +13,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   if (developmentChain.includes(network.name)) {
     console.log("local network deploying ...");
 
-    await deploy("VRFCoordinatorV2Mock", {
+    const VRFCoordinatorV2Mock = await deploy("VRFCoordinatorV2Mock", {
       from: deployer,
       log: true,
       args: args
@@ -21,6 +21,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     console.log("Mocks deployed!");
     console.log("---------------------------")
+
+
   }
 }
 

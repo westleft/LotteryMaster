@@ -14,7 +14,8 @@ const { assert, expect } = require("chai");
       deployer = (await getNamedAccounts()).deployer;
       await deployments.fixture(["all"]);
 
-      guessNumberContract = await ethers.getContract("GuessNumber", deployer);      
+      guessNumberContract = await ethers.getContract("GuessNumber", deployer);    
+      vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer);    
     })
 
     describe("constructor", () => {
@@ -25,57 +26,62 @@ const { assert, expect } = require("chai");
     })
 
     describe("抽獎", () => {
-      it("隨機數字還沒產生", async () => {
-        // const amount = ethers.utils.parseEther(1);
-        // await expect(guessNumberContract.payment(1, { value: amount }))
-        //   .to.be.revertedWithCustomError(guessNumberContract, "GuessNumber__RandomNumberCreating");        
+      it("付的金額不足", async () => {
+        await expect(guessNumberContract.drawLottery(1, { value: ethers.utils.parseEther("0.001") }))
+          .to.be.revertedWithCustomError(guessNumberContract, "GuessNumber__PaymentNotEnough");
       })
-      // it("付的金額不足", async () => {
-      //   const transaction = await contract.drawLottery(1, { value: "0.001" });
 
-      // })
+      it("猜的數字範圍不對", async () => {
+        // await guessNumberContract.requestRandomWords();
+        // const requestId = await guessNumberContract.requestId();
+        // await vrfCoordinatorV2Mock.fulfillRandomWords(requestId.toString(), guessNumberContract.address);
+        await expect(guessNumberContract.drawLottery(50, { value: ethers.utils.parseEther("0.01") }))
+          .to.be.revertedWithCustomError(guessNumberContract, "GuessNumber__OutOfRange");
+      })
+
+      it("猜數字", async () => {
+        const loseTransaction = await guessNumberContract.drawLottery(3, { value: ethers.utils.parseEther("0.01") });
+        const loseTransactionReceipt = await loseTransaction.wait();
+        const { event } = loseTransactionReceipt.events[0];
+        assert.equal(event, "NotWinner");
+
+        const winTransaction = await guessNumberContract.drawLottery(7, { value: ethers.utils.parseEther("0.01") });
+        const winTransactionReceipt = await winTransaction.wait();
+        const result = (winTransactionReceipt.events).some(event => event.event === "Winner");
+        assert.equal(result, true);
+      })
+
+      it("答對後轉帳", async () => {
+        const beforeBalance = await ethers.provider.getBalance(deployer);
+        const transaction = await guessNumberContract.drawLottery(7, { value: ethers.utils.parseEther("0.01") });
+        await transaction.wait();
+        const afterBalance = await ethers.provider.getBalance(deployer);
+        assert(afterBalance > beforeBalance, true);
+      })
+      
+      it("隨機數字還沒產生", async () => {
+        const transaction = await guessNumberContract.drawLottery(7, { value: ethers.utils.parseEther("0.01") });
+        await expect(guessNumberContract.drawLottery(5, { value: ethers.utils.parseEther("0.01") }))
+          .to.be.revertedWithCustomError(guessNumberContract, "GuessNumber__RandomNumberCreating");
+      })
+
+      it("隨機數字已產生，繼續抽獎", async () => {
+        const transaction = await guessNumberContract.drawLottery(7, { value: ethers.utils.parseEther("0.01") });
+        const requestId = await guessNumberContract.requestId();
+        await vrfCoordinatorV2Mock.fulfillRandomWords(requestId.toString(), guessNumberContract.address);
+        await guessNumberContract.drawLottery(5, { value: ethers.utils.parseEther("0.01") });
+      })      
     })
 
-    // describe("payment", () => {
-    //   let minPayment; // 最低付款金額
-    //   let ethMinPayment;
-      
-    //   beforeEach(async () => {
-    //     minPayment = await guessNumberContract.getMinPayment();
-    //     ethMinPayment = ethers.utils.formatEther(minPayment);
-    //   })
-
-    //   it("發送金額低於最低限制", async () => {
-    //     const sendETH = (ethMinPayment - 0.01).toString();
-    //     await expect(guessNumberContract.payment({ value: ethers.utils.parseEther(sendETH) }))
-    //       .to.be.revertedWithCustomError(guessNumberContract, "GuessNumber__PaymentNotEnough");
-    //   })
-
-    //   it("確認合約內的金額與發送金額相同", async () => {
-    //     await guessNumberContract.payment({ value: ethers.utils.parseEther(ethMinPayment) });
-    //     const balance = await guessNumberContract.getContractBalance();
-    //     const ethBalance = ethers.utils.formatEther(balance);
-    //     assert.equal(ethBalance, ethMinPayment);
-    //   })
-
-    //   it("確認 mapping 內的金額跟發送的一樣", async () => {
-    //     for (let i = 0; i < 3; i++) {
-    //       await guessNumberContract.payment({ value: ethers.utils.parseEther(ethMinPayment) });
-    //     }
-    //     const playerBalance = await guessNumberContract.getAmountByAddress(deployer)
-    //     assert.equal(ethers.utils.formatEther(playerBalance), "0.3");
-    //   })
-    // })
-
-    // describe("random number", () => {
-    //   it("產生隨機數字", async () => {
-    //     const tx = await guessNumberContract.requestRandomWords();
-    //   })
-    // })
-
-    // describe("guess number", () => {
-    //   it("產生隨機數字", async () => {
-    //     const tx = await guessNumberContract.requestRandomWords();
-    //   })
-    // })
+    describe("檢查紀錄", () => {
+      it("透過 address 取得付款金額", async () => {
+        // const [owner, otherAccount] = await ethers.getSigners();
+        // const secondAddressSigner = await ethers.getSigner(otherAccount.address)
+        for (let i = 0; i < 3; i++) {
+          await guessNumberContract.drawLottery(1, { value: ethers.utils.parseEther("0.01") });
+        }
+        const playerBalance = await guessNumberContract.getAmountByAddress(deployer);
+        assert.equal(ethers.utils.formatEther(playerBalance), "0.03");
+      })
+    })
   })

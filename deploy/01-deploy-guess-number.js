@@ -27,6 +27,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     ],
     waitConfirmation: network.config.blockConfirmations || 1,
     log: true,
+    gasLimit: 2000000,
+    value: ethers.utils.parseEther('10')
   })
 
   if (chainId === 31337) {
@@ -35,7 +37,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
       guessNumberContract.address
     )
   }
-
 }
 
 // 產生部署要用的參數
@@ -58,9 +59,8 @@ const createDeployArgs = async (network) => {
     await VRFCoordinatorV2Mock.fundSubscription((subId.toNumber()), VRF_SUB_FUND_AMOUNT);
   } else {
     vrfCoordinatorV2Address = networkConfig[chainId].vrfCoordinator;
+    subId = networkConfig[chainId].subscriptionId;
   }
-  
-  // subId = networkConfig[chainId].subscriptionId;
   
   callbackGasLimit = networkConfig[chainId].callbackGasLimit;
   gasLane = networkConfig[chainId].gasLane;
