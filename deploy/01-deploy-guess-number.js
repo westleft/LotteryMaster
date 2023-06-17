@@ -28,7 +28,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     waitConfirmation: network.config.blockConfirmations || 1,
     log: true,
     gasLimit: 2000000,
-    value: ethers.utils.parseEther('10')
+    // value: ethers.utils.parseEther('10')
   })
 
   if (chainId === 31337) {
