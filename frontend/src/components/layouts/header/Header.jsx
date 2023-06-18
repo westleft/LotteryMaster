@@ -1,11 +1,20 @@
 import s from "./Header.module.scss";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom"
+import { authActions } from "@/store/auth"
 
 const Header = () => {
   const navRoute = [
     { to: "/", text: "link1" },
     { to: "/lottery", text: "link2" },
   ]
+
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth.isLogin)
+
+  const loginHandler = () => {
+    dispatch(authActions.login())
+  }
 
   return (
     <>
@@ -26,8 +35,11 @@ const Header = () => {
               </li>
             )
           }
+          <button onClick={loginHandler}>login</button>
           <li className={s["header__list-item"]}>
-            <button className={`${s["header__btn"]} ${s["header__btn-login"]}`}>連接錢包</button>
+            <button className={`${s["header__btn"]} ${s["header__btn-login"]}`}>
+              { auth ? "連接錢包" : "以登入"}
+            </button>
           </li>
         </ul>
       </header>
