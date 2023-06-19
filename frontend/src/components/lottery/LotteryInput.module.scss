@@ -1,0 +1,38 @@
+.lottery_i {
+  @include flex();
+
+  &__input {
+    height: 100%;
+    min-width: 100px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: #dedede;
+    margin-right: 20px;
+    border: none;
+    font-size: $text_pc_size;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 4px #00e3a6;
+    }
+  }
+
+  &__btn {
+    background-color: $color_green;
+    color: $main_background;
+    font-size: $text_pc_size;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 32px;
+    border-radius: 4px;
+    box-shadow: 0 0 20px #00e3a6;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

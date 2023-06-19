@@ -1,0 +1,7 @@
+.lottery {
+  @include flex();
+  background-color: $main_background;
+  color: $color_white;
+  flex-direction: column;
+  min-height: 100vh;
+}

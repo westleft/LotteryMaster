@@ -2,6 +2,10 @@ import s from "./Header.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom"
 import { authActions } from "@/store/auth"
+import { ethers } from "ethers"
+import { useEffect } from "react";
+import { toast } from 'react-toastify';
+import { useConnectState } from "@/hooks/useConnectState"
 
 const Header = () => {
   const navRoute = [
@@ -10,12 +14,33 @@ const Header = () => {
   ]
 
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth.isLogin)
+  const isLogin = useSelector(state => state.auth.isLogin);
+  const walletAddress = useSelector(state => state.auth.walletAddress);
 
   const loginHandler = () => {
     dispatch(authActions.login())
   }
 
+  const connectWallet = async () => {
+    if (!window.ethereum) {
+      toast.error("請先安裝 MetaMask 錢包");
+      return;
+    }
+
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      useConnectState(dispatch);
+
+    } catch(err) {
+      console.log(err);
+      if (err.message === "User rejected the request.") {
+        toast.error("您已拒絕連接");
+      }
+    }
+
+    // const provider = new ethers.BrowserProvider(window.ethereum);
+    // console.log(provider)
+  }
   return (
     <>
       <header className={s["header"]}>
@@ -35,10 +60,13 @@ const Header = () => {
               </li>
             )
           }
-          <button onClick={loginHandler}>login</button>
           <li className={s["header__list-item"]}>
-            <button className={`${s["header__btn"]} ${s["header__btn-login"]}`}>
-              { auth ? "連接錢包" : "以登入"}
+            <button 
+              onClick={connectWallet}
+              className={`${s["header__btn"]} ${s["header__btn-login"]}`}
+            >
+              { isLogin ? walletAddress : "連接錢包" }
+              {/* connect */}
             </button>
           </li>
         </ul>

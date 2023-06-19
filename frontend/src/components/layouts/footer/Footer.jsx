@@ -1,10 +1,13 @@
-import styles from "./Footer.module.css";
+import s from "./Footer.module.scss";
 
 const Footer = () => {
+
   return(
-    <>
-      <h1 className={styles.h1_title}>footer</h1>
-    </>
+    <footer className={s["footer"]}>
+      <p className={s["footer__text"]}>
+        Copyright © 2022 <a className={s["footer__link"]} href="https://google.com" target="_blank">westleft</a>
+      </p>
+    </footer>
   )
 }
 

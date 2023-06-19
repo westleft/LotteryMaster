@@ -1,5 +1,50 @@
 .home {
+  @include flex();
   background-color: $main_background;
   min-height: 100vh;
   color: $color_white;
+
+  &__wrap {
+    @include flex(center, space-around);
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  &__banner {
+    max-height: 420px;
+    flex: 2;
+  }
+
+  &__container {
+    @include flex(flex-start, flex-start);
+    flex-direction: column;
+    flex: 3;
+
+    > .home {
+      &__text-sub {
+        font-size: $text_pc_size;
+        color: #80AB9E;
+        margin-bottom: 4px;
+      }
+      &__text-title {
+        color: $color_white;
+        font-size: $h2_pc_size;
+        line-height: 140%;
+        margin-bottom: 32px;
+        > span {
+          color: $color_green;
+        }
+      }
+      &__btn-action {
+        background-color: $color_green;
+        color: $main_background;
+        font-size: $text_pc_size;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 16px 60px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px #00e3a6;
+      }
+    }
+  }
 }

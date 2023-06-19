@@ -1,0 +1,15 @@
+.footer {
+  @include flex();
+  background-color: $main_background;
+  padding: 12px 0;
+
+  &__text {
+    color: $color_white;
+    font-size: $text_pc_size;
+  }
+
+  &__link {
+    color: $color_green;
+    text-decoration: none;
+  }
+}
