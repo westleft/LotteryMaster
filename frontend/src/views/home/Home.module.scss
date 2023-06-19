@@ -3,6 +3,11 @@
   background-color: $main_background;
   min-height: 100vh;
   color: $color_white;
+  background-image: url("../../assets/images/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0 4%;
 
   &__wrap {
     @include flex(center, space-around);

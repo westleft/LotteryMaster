@@ -9,7 +9,7 @@ const authSlice = createSlice({
     loginInit(state, actions) {
       const { isLogin, walletAddress } = actions.payload;
       state.isLogin = isLogin;
-      state.walletAddress = walletAddress;
+      state.walletAddress = walletAddress;      
     }
   },
 });
