@@ -10,7 +10,10 @@ export async function useNetworkVaild(dispatch) {
       params: [{ chainId: "0xaa36a7" }],
     });
 
-    location.reload()
+    ethereum.on("chainChanged", (newChainId) => {
+      dispatch(networkActions.changeChainId(newChainId))
+    });
+
   } catch (switchError) {
     // This error code indicates that the chain has not been added to MetaMask.
     if (switchError.code === 4902) {

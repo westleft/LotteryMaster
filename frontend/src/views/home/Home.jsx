@@ -1,50 +1,9 @@
-import s from "./Home.module.scss"
-import { useLoaderData, useRouteError, json } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { NavLink } from "react-router-dom"
-import { counterActions } from "@/store/counter"
-import { add } from "@/store/auth"
-import { useState, useEffect } from "react"
+import s from "./Home.module.scss";
+import { NavLink } from "react-router-dom";
 
-import homeBanner from '@/assets/images/home.svg'
+import homeBanner from "@/assets/images/home.png";
 
 const HomePage = () => {
-  const data = useLoaderData()
-
-  const counter = useSelector(state => state.counter.counter);
-  const show = useSelector(state => state.counter.show);
-  const dispatch = useDispatch();
-
-  const incr = () => {
-    dispatch(counterActions.increment())
-  }
-
-  const customInc = () => {
-    dispatch(counterActions.increase(10))
-  }
-
-  const decr = () => {
-    dispatch(counterActions.decrement())
-  }
-
-  const showCounter = () => {
-    dispatch(counterActions.toggle());
-  }
-
-  const [catData, setCatData] = useState([])
-
-  const getData = async () => {
-    const res = await fetch("https://cat-fact.herokuapp.com/facts");
-    const d = await res.json()
-    setCatData(d)
-  }
-
-  useEffect(() => {
-    getData()
-    dispatch(add())
-  }, [])
-
-
   return (
     <>
       <main className={s["home"]}>
@@ -64,35 +23,10 @@ const HomePage = () => {
           </div>
 
           <img className={s["home__banner"]} src={homeBanner} alt="" />
-          {/* <HomeBanner /> */}
         </div>
-
-
-        {/* {
-          catData.map(item => 
-            <p key={item.text}>
-              {item.text}
-              <br />
-              ------
-            </p>
-          )
-        }
-        <button onClick={getData}>getDat</button>
-        {show && <p>{counter}</p>}
-        <button onClick={incr}>++</button>
-        <button onClick={decr}>--</button>
-        <button onClick={customInc}>customInc</button>
-        <button onClick={showCounter}>show</button>
-        <h1>HomePage</h1> */}
-
-
       </main>
     </>
   )
-}
-
-export const homeLoader = async () => {
-  return json({ msg: "wow opop" })
 }
 
 export default HomePage;

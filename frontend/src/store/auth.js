@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { counterActions } from "@/store/counter"
 const initState = { isLogin: false, walletAddress: "0x" };
 
 const authSlice = createSlice({
@@ -13,12 +12,6 @@ const authSlice = createSlice({
     }
   },
 });
-
-export const add = () => {
-  return (dispatch) => {
-    dispatch(counterActions.increment())
-  }
-}
 
 export const authActions = authSlice.actions;
 

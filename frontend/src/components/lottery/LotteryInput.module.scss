@@ -29,6 +29,13 @@
     border: none;
     cursor: pointer;
   }
+
+  .btn-disable {
+    background-color: #d1d1d1;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 }
 
 input[type=number]::-webkit-outer-spin-button,

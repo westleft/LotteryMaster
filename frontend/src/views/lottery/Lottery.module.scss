@@ -3,5 +3,18 @@
   background-color: $main_background;
   color: $color_white;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 90vh;
+
+  &__total-price {
+    font-size: $h2_pc_size;
+    padding: 20px 0;
+    > span {
+      color: $color_green;
+    }
+  }
+
+  &__user-balance {
+    font-size: $text_pc_size;
+    color: $color_grey;
+  }
 }

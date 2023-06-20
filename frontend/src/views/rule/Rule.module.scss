@@ -1,0 +1,39 @@
+.rule {
+  @include flex(center, flex-start);
+  background-color: $main_background;
+  color: $color_white;
+  flex-direction: column;
+  min-height: 90vh;
+
+  &__wrap {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+  }
+
+  &__title {
+    color: $color_white;
+    &-h1 {
+      font-size: $h1_pc_size;
+      padding: 8px 0;
+    }
+
+    &-h2 {
+      font-size: 28px;
+      margin: 20px 0 8px 0;
+      border-left: 4px solid $color_green;
+      padding-left: 12px;
+    }
+  }
+
+  &__text {
+    color: $color_white;
+    line-height: 140%;
+    max-width: 800px;
+    padding: 12px 0;
+  }
+
+  &__link {
+    color: $color_green;
+  }
+}

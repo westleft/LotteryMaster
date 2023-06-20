@@ -8,3 +8,15 @@
   height: $h;
   width: $w;
 }
+
+@mixin mobile{
+  @media(max-width:625px){
+    @content;
+  }
+}
+
+@mixin pad{
+  @media(max-width:768px){
+    @content;
+  }
+}

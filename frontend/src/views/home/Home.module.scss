@@ -16,14 +16,16 @@
   }
 
   &__banner {
-    max-height: 420px;
+    max-height: 600px;
     flex: 2;
+    object-fit: contain;
+    object-position: center;
   }
 
   &__container {
     @include flex(flex-start, flex-start);
     flex-direction: column;
-    flex: 3;
+    flex: 1;
 
     > .home {
       &__text-sub {

@@ -1,4 +1,5 @@
 import s from "./Header.module.scss";
+import Logo from "@/assets/images/logo.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom"
 import { authActions } from "@/store/auth"
@@ -6,11 +7,13 @@ import { ethers } from "ethers"
 import { useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useConnectState } from "@/hooks/useConnectState"
+import { useNetworkVaild } from "@/hooks/useNetwork"
 
 const Header = () => {
   const navRoute = [
-    { to: "/", text: "link1" },
-    { to: "/lottery", text: "link2" },
+    { to: "/lottery", text: "前往抽獎" },
+    { to: "/test-coin", text: "領取測試幣" },
+    { to: "/rule", text: "抽獎規則" },
   ]
 
   const dispatch = useDispatch();
@@ -27,27 +30,34 @@ const Header = () => {
       return;
     }
 
+    // if (window.ethereum._metamask.isUnlocked()) {
+    //   toast.error("等待先前的請求完成...");
+    //   return;
+    // }
+
     try {
       await window.ethereum.request({ method: "eth_requestAccounts" });
       useConnectState(dispatch);
-
+      useNetworkVaild(dispatch);
     } catch(err) {
       console.log(err);
       if (err.message === "User rejected the request.") {
         toast.error("您已拒絕連接");
       }
     }
-
-    // const provider = new ethers.BrowserProvider(window.ethereum);
-    // console.log(provider)
   }
+
   return (
     <>
       <header className={s["header"]}>
-        <h2 className={s["header__title"]}>
-          <Link to="/">LotteryMaster</Link>
-        </h2>
         <ul className={s["header__list"]}>
+          <li className={s["header__list-item"]}>
+            <h2 className={s["header__title"]}>
+              <Link to="/">
+                <img src={Logo} alt="LotteryMaster" />
+              </Link>
+            </h2>
+          </li>
           {
             navRoute.map(({to, text}) =>
               <li key={to} className={s["header__list-item"]}>
@@ -60,16 +70,19 @@ const Header = () => {
               </li>
             )
           }
-          <li className={s["header__list-item"]}>
-            <button 
-              onClick={connectWallet}
-              className={`${s["header__btn"]} ${s["header__btn-login"]}`}
-            >
-              { isLogin ? walletAddress : "連接錢包" }
-              {/* connect */}
-            </button>
-          </li>
         </ul>
+        {
+          isLogin ? 
+          <p className={s["header__address"]}>
+            錢包地址: { walletAddress.slice(0, 6) }...{ walletAddress.slice(walletAddress.length - 6, walletAddress.length) }
+          </p> : 
+          <button 
+            onClick={connectWallet}
+            className={`${s["header__btn"]} ${s["header__btn-login"]}`}
+          > 
+            連接錢包
+          </button>
+        }
       </header>
       <div className={s["header__box"]}></div>
     </>
