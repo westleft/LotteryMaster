@@ -1,11 +1,13 @@
 .header {
   @include flex(center, space-between);
-  background-color: $main_background;
   position: fixed;
   width: 100%;
   padding: 20px 4%;
   top: 0;
   left: 0;
+  background: rgb(68 68 68 / 80%);
+  backdrop-filter: blur(8px) saturate(180%);
+  box-shadow: 0 1px 8px rgba(0,0,0,.1);
 
   &__title {
     margin-right: 16px;

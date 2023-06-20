@@ -59,6 +59,11 @@ const LotteryPage = () => {
 }
 
 export const loader = async () => {
+  if (screen.width < 650) {
+    toast.error("目前不支援手機版");
+    return redirect("/");
+  }
+
   if (!window.ethereum.selectedAddress) {
     toast.error("請先連結錢包才可抽獎");
     return redirect("/");

@@ -5,7 +5,7 @@ const Footer = () => {
   return(
     <footer className={s["footer"]}>
       <p className={s["footer__text"]}>
-        Copyright © 2022 <a className={s["footer__link"]} href="https://google.com" target="_blank">westleft</a>
+        Copyright © 2022 <a className={s["footer__link"]} href="https://github.com/westleft" target="_blank">westleft</a>
       </p>
     </footer>
   )

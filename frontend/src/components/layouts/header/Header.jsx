@@ -59,20 +59,22 @@ const Header = () => {
             </h2>
           </li>
           {
-            navRoute.map(({to, text}) =>
-              <li key={to} className={s["header__list-item"]}>
-                <NavLink
-                  to={to}
-                  className={({isActive}) => isActive ? s["header__link-active"] : s["header__link"]}
-                >
-                  {text}
-                </NavLink>
-              </li>
-            )
+            (screen.width > 650) &&
+              navRoute.map(({to, text}) =>
+                <li key={to} className={s["header__list-item"]}>
+                  <NavLink
+                    to={to}
+                    className={({isActive}) => isActive ? s["header__link-active"] : s["header__link"]}
+                  >
+                    {text}
+                  </NavLink>
+                </li>
+              )
           }
         </ul>
+
         {
-          isLogin ? 
+          screen.width > 650 && isLogin ? 
           <p className={s["header__address"]}>
             錢包地址: { walletAddress.slice(0, 6) }...{ walletAddress.slice(walletAddress.length - 6, walletAddress.length) }
           </p> : 
