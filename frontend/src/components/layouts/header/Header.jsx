@@ -3,8 +3,6 @@ import Logo from "@/assets/images/logo.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom"
 import { authActions } from "@/store/auth"
-import { ethers } from "ethers"
-import { useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useConnectState } from "@/hooks/useConnectState"
 import { useNetworkVaild } from "@/hooks/useNetwork"

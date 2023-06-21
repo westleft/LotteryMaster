@@ -1,9 +1,9 @@
-import s from "./TestCoin.module.scss"
-import { NavLink } from "react-router-dom"
+import s from "./TestCoin.module.scss";
+import { NavLink } from "react-router-dom";
 
-import GetTokenImage from "@/assets/images/tutorial/get_token.jpg"
-import ConfirmationImage from "@/assets/images/tutorial/confirmation.jpg"
-import SuccessImage from "@/assets/images/tutorial/success.jpg"
+import GetTokenImage from "@/assets/images/tutorial/get_token.jpg";
+import ConfirmationImage from "@/assets/images/tutorial/confirmation.jpg";
+import SuccessImage from "@/assets/images/tutorial/success.jpg";
 
 const TestCoinPage = () => {
   return (
