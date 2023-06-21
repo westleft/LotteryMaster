@@ -45,7 +45,7 @@ const LotteryPage = () => {
 
   return (
     <div className={s["lottery"]}>
-      <h2 className={s["lottery__total-price"]}>目前累積獎金為 <span>{contractBalance} ETH</span></h2>
+      <h2 className={s["lottery__total-price"]}>目前累積總獎金為 <span>{contractBalance} ETH</span></h2>
       <LotteryInput 
         getUserBalance={getUserBalance} 
         getContractBalance={getContractBalance} 

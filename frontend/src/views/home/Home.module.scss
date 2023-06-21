@@ -1,7 +1,7 @@
 .home {
   @include flex();
   background-color: $main_background;
-  min-height: 100vh;
+  min-height: 90vh;
   color: $color_white;
   background-image: url("../../assets/images/background.png");
   background-position: center;
@@ -28,6 +28,7 @@
     flex: 2;
     object-fit: contain;
     object-position: center;
+    animation: banner-animation 2s infinite ease-in-out alternate;
     @include mobile {
       width: 100%;
     }
@@ -69,5 +70,15 @@
         box-shadow: 0 0 20px #00e3a6;
       }
     }
+  }
+}
+
+
+@keyframes banner-animation {
+  0% {
+    transform: translateY(4px);
+  }
+  100% {
+    transform: translateY(-4px);
   }
 }

@@ -1,11 +1,11 @@
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter, createHashRouter } from "react-router-dom"
 import App from "@/App"
 import HomePage from "@/views/home/Home"
 import LotteryPage, {  loader } from "@/views/lottery/Lottery"
 import RulePage from "@/views/rule/Rule"
 import TestCoinPage from "@/views/coin/TestCoin"
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/", element: <App />, children: [
       { path: "/", element: <HomePage />, index: true },
