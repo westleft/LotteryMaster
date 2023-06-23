@@ -1,20 +1,20 @@
-import { networkActions } from "@/store/network"
+import { networkActions } from "@/store/network";
+import { AppDispatch } from "@/store/";
 
-export async function useNetworkVaild(dispatch) {
-  const { chainId } = window.ethereum;
+export async function useNetworkVaild(dispatch: AppDispatch) {
+  const { ethereum, ethereum: { chainId } } = window.ethereum;
   if (chainId === "0xaa36a7") return;
-  
+
   try {
     await ethereum.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: "0xaa36a7" }],
     });
 
-    ethereum.on("chainChanged", (newChainId) => {
-      dispatch(networkActions.changeChainId(newChainId))
+    ethereum.on("chainChanged", (newChainId: string) => {
+      dispatch(networkActions.changeChainId(newChainId));
     });
-
-  } catch (switchError) {
+  } catch (switchError: any) {
     // This error code indicates that the chain has not been added to MetaMask.
     if (switchError.code === 4902) {
       try {

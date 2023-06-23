@@ -5,22 +5,23 @@ import { useContract } from "@/hooks/useContract"
 import { useEffect, useState } from "react";
 import { contractAddress, abi } from "@/abi/"
 import { ethers } from "ethers";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { redirect } from "react-router-dom";
+import { RootState } from "@/store/"; 
 
 const LotteryPage = () => {
-  const dispatch = useDispatch();
-  const chainId = useSelector(state => state.network.chainId);
-  const [contractBalance, setContractBalance] = useState(0);
-  const [userBalance, setUserBalance] = useState(0);
+  const chainId = useSelector((state: RootState) => state.network.chainId);
+  const [contractBalance, setContractBalance] = useState("0");
+  const [userBalance, setUserBalance] = useState("0");
 
   const getContractBalance = async () => {
     try {
-      const contract = await useContract(contractAddress, abi);
+      const contract = await useContract(contractAddress, abi); 
       const res = await contract.getContractBalance();
-      const balance = ethers.formatEther(res);
+      const balance = (ethers.formatEther(res));
+      console.log(balance)
       setContractBalance(balance);
-    } catch (err) {
+    } catch (err: any) {
       toast(err.reason);
       console.log(err);
     }
@@ -31,7 +32,7 @@ const LotteryPage = () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const balance = await provider.getBalance(window.ethereum.selectedAddress);
       
-      setUserBalance((ethers.formatEther(balance)).slice(0, 6));
+      setUserBalance(ethers.formatEther(balance).slice(0, 6));
     } catch (error) {
       console.error("獲取餘額時發生錯誤：", error);
     }

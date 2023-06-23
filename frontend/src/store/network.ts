@@ -7,8 +7,7 @@ const networkSlice = createSlice({
   initialState: initState,
   reducers: {
     changeChainId(state, actions) {
-        console.log("change", actions.payload)
-        
+      console.log("change", actions.payload);
       state.chainId = actions.payload;
     },
   },
