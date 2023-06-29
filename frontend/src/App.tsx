@@ -11,6 +11,7 @@ const App = () => {
   const dispatch = useDispatch();
   
   useEffect(() => {
+    if (!window.ethereum) return;
     useConnectState(dispatch);
   }, [])
 

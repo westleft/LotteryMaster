@@ -1,9 +1,14 @@
 import s from "./Home.module.scss";
-import { NavLink } from "react-router-dom";
-
 import homeBanner from "@/assets/images/home.png";
+import { NavLink } from "react-router-dom";
+import { useNetworkVaild } from "@/hooks/useNetwork";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/"; 
 
 const HomePage = () => {
+  const chainId = useSelector((state: RootState) => state.network.chainId);
+  const dispatch = useDispatch();
+
   return (
     <>
       <main className={s["home"]}>
@@ -20,6 +25,16 @@ const HomePage = () => {
             >
               立即抽獎
             </NavLink>
+            {
+              (window.ethereum && chainId !== "0xaa36a7") &&
+              <button 
+                onClick={() => useNetworkVaild(dispatch)}
+                className={s["home__btn-switch"]}
+              >
+                切換至 Sepolia 測試網
+              </button>
+            }
+
           </div>
 
           <img className={s["home__banner"]} src={homeBanner} alt="" />
