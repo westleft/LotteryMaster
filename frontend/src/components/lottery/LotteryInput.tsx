@@ -1,11 +1,11 @@
 import s from "./LotteryInput.module.scss";
 import { useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { contractAddress, abi } from "@/abi/";
-import { ethers } from "ethers";
-import { useContract } from "@/hooks/useContract";
 import { FC } from "react";
+import { toast } from "react-toastify";
+import { useContract } from "@/hooks/useContract";
+import { ethers } from "ethers";
 import { TransactionReceipt, EventLog } from "ethers";
+import { contractAddress, abi } from "@/abi/";
 
 const LotteryInput: FC<{
   getUserBalance: () => {};
@@ -17,12 +17,13 @@ const LotteryInput: FC<{
 
   const checkInputIsValid = () => {
     const value = inputDom.current?.value;
+
     if (!value || parseInt(value) > 10 || parseInt(value) < 0) {
       toast.error("只允許輸入 1 ~ 10 之間的數字");
       return false;
     }
 
-    if (parseInt(userBalance) < 0.01) {
+    if (parseFloat(userBalance) < 0.01) {
       toast.error("持有 ETH 不足");
       return false;
     }
