@@ -19,7 +19,6 @@ const LotteryPage = () => {
       const contract = await useContract(contractAddress, abi); 
       const res = await contract.getContractBalance();
       const balance = (ethers.formatEther(res));
-      console.log(balance)
       setContractBalance(balance);
     } catch (err: any) {
       toast(err.reason);
@@ -65,10 +64,16 @@ export const loader = async () => {
     return redirect("/");
   }
 
-  if (!window.ethereum.selectedAddress) {
+  if (!window.ethereum?.selectedAddress) {
     toast.error("請先連結錢包才可抽獎");
     return redirect("/");
   }
+
+  if (window.ethereum.networkVersion !== "11155111") {
+    toast.error("請先切換至 Sepolia 測試網");
+    return redirect("/");
+  }
+
   return null;
 };
 
