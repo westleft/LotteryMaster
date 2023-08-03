@@ -12,6 +12,20 @@
 
 因為是部屬在 Sepolia 測試鏈，只要領取測試幣就可以抽獎，**不用花費主網的 ETH**。
 
+## 前端畫面一覽
+
+| 首頁 |　抽獎頁 |
+| ---- | ---- |
+| ![首頁](https://i.imgur.com/AdaVV4f.jpg) | ![抽獎頁](https://i.imgur.com/A2CLaWS.jpg) |
+
+| 抽獎規則頁 |　領取代幣頁 |
+| ---- | ---- |
+| ![抽獎規則頁](https://i.imgur.com/Rv0FfL0.jpg) | ![領取代幣頁](https://i.imgur.com/p1R1ILa.jpg) |
+
+| 確認交易 |　抽獎結果頁 |
+| ---- | ---- |
+| ![確認交易](https://i.imgur.com/tKZH4mG.jpg) | ![抽獎結果頁](https://i.imgur.com/groL2fe.jpg) |
+
 ## 關於開發
 
 * 智能合約：使用 `Hardhat` 框架開發，並透過 Chainlink VRF 產生隨機數字。
