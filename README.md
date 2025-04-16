@@ -4,7 +4,7 @@
 
 ![](https://img.shields.io/badge/-React-80DEEA?logo=react&logoColor=fff&logoWidth=12) ![](https://img.shields.io/badge/-Solidity-1C1C1C?logo=solidity&logoColor=white&logoWidth=12)
 
-➤ 連結：https://solitary-salad-9854.on.fleek.co/
+➤ 連結：https://lottery-master-git-main-westlefts-projects.vercel.app/
 
 `Lottery Master` 是一個部屬在區塊鏈（Sepolia）上的抽獎遊戲，玩家只要選一個喜歡的數字、並投入 0.01 ETH 至獎金池即可參加抽獎，如果幸運猜中數字將可獲得總獎金的 80%，同時系統將重置隨機數字，提供下一輪玩家抽獎。
 
@@ -33,5 +33,4 @@
 
 ## 其他
 
-* Fleek + IPFS
 * [Free Logo Maker](https://www.namecheap.com/logo-maker/app/new) 產生 LOGO
